@@ -1,47 +1,74 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RENTO | تأجير سيارات</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج حجز سيارة - RENTO</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>🚗 RENTO</h1>
-    <nav>
-      <a href="about.html">من نحن</a>
-      <a href="services.html">الخدمات</a>
-      <a href="gallery.html">المعرض</a>
-      <a href="contact.html">تواصل معنا</a>
-    </nav>
-  </header>
+    <div class="container">
+        <h1>نموذج حجز سيارة</h1>
+        <form id="car-rental-form">
+            <label for="full-name">الاسم الكامل:</label>
+            <input type="text" id="full-name" name="fullName" required>
 
-  <section class="hero">
-    <h2>استأجر سيارتك بكل سهولة مع RENTO</h2>
-    <p>خدمة تأجير سيارات، توصيل للمطار، واستلام من أي مكان</p>
-    <a href="#booking"><button>احجز الآن</button></a>
-  </section>
+            <label for="phone">رقم الهاتف:</label>
+            <input type="text" id="phone" name="phone" required>
 
-  <section id="services" class="services">
-    <h2>خدماتنا</h2>
-    <div class="service-card">🚗 تأجير سيارات يومي، أسبوعي، وشهري</div>
-    <div class="service-card">✈️ توصيل واستلام من مطار دمشق</div>
-    <div class="service-card">📍 تسليم واستلام من أي مكان في دمشق واللاذقية وطرطوس</div>
-    <div class="service-card">📝 عقود مرنة بدون تعقيدات</div>
-  </section>
+            <label for="car-type">نوع السيارة:</label>
+            <select id="car-type" name="carType" required>
+                <option value="رينو كوليوس 2017 (أسود)">رينو كوليوس 2017 (أسود)</option>
+                <option value="رينو كوليوس 2017 (كحلي)">رينو كوليوس 2017 (كحلي)</option>
+                <option value="هيونداي توسان 2018 (أبيض)">هيونداي توسان 2018 (أبيض)</option>
+                <option value="رينو تاليسمان 2019 (أسود)">رينو تاليسمان 2019 (أسود)</option>
+            </select>
 
-  <section id="gallery" class="gallery">
-    <h2>معرض الصور</h2>
-    <img src="https://via.placeholder.com/300x200?text=Renault+Koleos+2017+Black" alt="Renault Koleos 2017 - أسود">
-    <img src="https://via.placeholder.com/300x200?text=Hyundai+Tucson+2018+White" alt="Hyundai Tucson 2018 - أبيض">
-  </section>
+            <label for="pickup-date">تاريخ الاستلام:</label>
+            <input type="date" id="pickup-date" name="pickupDate" required>
 
-  <footer>
-    <p>© 2025 RENTO. جميع الحقوق محفوظة.</p>
-  </footer>
+            <label for="dropoff-date">تاريخ التسليم:</label>
+            <input type="date" id="dropoff-date" name="dropoffDate" required>
 
-  <script src="app.js"></script>
+            <label for="dropoff-location">موقع التسليم:</label>
+            <input type="text" id="dropoff-location" name="dropoffLocation" required>
+
+            <button type="submit">إرسال الحجز</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('car-rental-form');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(form);
+            const data = {
+                fullName: formData.get('fullName'),
+                phone: formData.get('phone'),
+                carType: formData.get('carType'),
+                pickupDate: formData.get('pickupDate'),
+                dropoffDate: formData.get('dropoffDate'),
+                dropoffLocation: formData.get('dropoffLocation'),
+            };
+
+            fetch("https://script.google.com/macros/s/AKfycbzEKirxEP_rIhCq9tQnwDL9G6sdaoQB3-Y3KcGpuC141mlFwIYOJNdE0j4M2aEfb40y/exec", {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            .then(response => response.text())
+            .then(result => {
+                alert("تم الحجز بنجاح!");
+                form.reset();
+            })
+            .catch(error => {
+                alert("حدث خطأ أثناء الحجز. يرجى المحاولة مرة أخرى.");
+            });
+        });
+    </script>
 </body>
 </html>
